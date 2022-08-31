@@ -24,11 +24,12 @@
     },
     {
       "lean": "lemma zero_add (n : mynat) : 0 + n = n :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "induction n with d,\nrw add_zero,\nrefl,\nrw add_succ,\nrw n_ih,\nrefl,"
     },
     {
       "lean": "lemma add_assoc (a b c : mynat) : (a + b) + c = a + (b + c) :=\n",
-      "editorText": "sorry"
+      "editorText": ""
     },
     {
       "lean": "lemma succ_add (a b : mynat) : succ a + b = succ (a + b) :=\n",
