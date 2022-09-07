@@ -107,13 +107,29 @@ end
 theorem impl_as_contrapositive_converse :
   (¬Q → ¬P) → (P → Q)  :=
 begin
-  sorry,
+  intro nQnP,
+  intro P,
+  by_contra hboom,
+  apply nQnP,
+  exact hboom,
+  exact P,
 end
 
 theorem contrapositive_law :
   (P → Q) ↔ (¬Q → ¬P)  :=
 begin
-  sorry,
+  split,
+  intro pq,
+  intro nq,
+  intro p,
+  have q : Q := pq p,
+  contradiction,
+  intro nqnp,
+  intro p,
+  by_contra hboom,
+  apply nqnp,
+  exact hboom,
+  exact p,
 end
 
 
@@ -124,7 +140,13 @@ end
 theorem lem_irrefutable :
   ¬¬(P∨¬P)  :=
 begin
-  sorry,
+  intro nP,
+  apply nP,
+  right,
+  intro P,
+  apply nP,
+  left,
+  exact P,
 end
 
 
@@ -135,7 +157,12 @@ end
 theorem peirce_law_weak :
   ((P → Q) → P) → ¬¬P  :=
 begin
-  sorry,
+  intro pqp,
+  intro nP,
+  apply nP,
+  apply pqp,
+  intro p,
+  contradiction,
 end
 
 
@@ -146,13 +173,23 @@ end
 theorem disj_as_negconj :
   P∨Q → ¬(¬P∧¬Q)  :=
 begin
-  sorry,
+  intro pouq,
+  intro npnq,
+  cases npnq,
+  cases pouq with p q,
+  contradiction,
+  contradiction,
 end
 
 theorem conj_as_negdisj :
   P∧Q → ¬(¬P∨¬Q)  :=
 begin
-  sorry,
+  intro pq,
+  intro npounq,
+  cases pq,
+  cases npounq with np nq,
+  contradiction,
+  contradiction,
 end
 
 
@@ -163,7 +200,16 @@ end
 theorem demorgan_disj :
   ¬(P∨Q) → (¬P ∧ ¬Q)  :=
 begin
-  sorry,
+  intro npouq,
+  split,
+  intro p,
+  apply npouq,
+  left,
+  exact p,
+  intro q,
+  apply npouq,
+  right,
+  exact q,
 end
 
 theorem demorgan_disj_converse :
