@@ -215,31 +215,65 @@ end
 theorem demorgan_disj_converse :
   (¬P ∧ ¬Q) → ¬(P∨Q)  :=
 begin
-  sorry,
+  intro npnq,
+  cases npnq with np nq,
+  intro pouq,
+  cases pouq with p q,
+  contradiction,
+  contradiction,
 end
 
 theorem demorgan_conj :
   ¬(P∧Q) → (¬Q ∨ ¬P)  :=
 begin
+  intro npouq,
+  right,
+  intro p,
+  apply npouq,
+  split,
+  exact p,
   sorry,
 end
 
 theorem demorgan_conj_converse :
   (¬Q ∨ ¬P) → ¬(P∧Q)  :=
 begin
-  sorry,
+  intro npouq,
+  intro pq,
+  cases pq with p q,
+  cases npouq with np nq,
+  contradiction,
+  contradiction,
 end
 
 theorem demorgan_conj_law :
   ¬(P∧Q) ↔ (¬Q ∨ ¬P)  :=
 begin
+  split,
+  intro npq,
   sorry,
 end
 
 theorem demorgan_disj_law :
   ¬(P∨Q) ↔ (¬P ∧ ¬Q)  :=
 begin
-  sorry,
+  split, 
+  intro npouq,
+  split,
+  intro p, 
+  apply npouq,
+  left,
+  exact p,
+  intro q,
+  apply npouq,
+  right,
+  exact q,
+  intro npnq,
+  intro pouq,
+  cases npnq with np nq,
+  cases pouq with p q,
+  contradiction,
+  contradiction,
 end
 
 ------------------------------------------------
@@ -249,25 +283,69 @@ end
 theorem distr_conj_disj :
   P∧(Q∨R) → (P∧Q)∨(P∧R)  :=
 begin
-  sorry,
+  intro pqour,
+  cases pqour with p qr,
+  cases qr with q r,
+  left,
+  split,
+  exact p,
+  exact q,
+  right,
+  split,
+  exact p,
+  exact r,
 end
 
 theorem distr_conj_disj_converse :
   (P∧Q)∨(P∧R) → P∧(Q∨R)  :=
 begin
-  sorry,
+  intro pqoupr,
+  cases pqoupr with pq pr,
+  cases pq with p q,
+  split,
+  exact p,
+  left,
+  exact q,
+  cases pr with p r,
+  split,
+  exact p,
+  right,
+  exact r,  
 end
 
 theorem distr_disj_conj :
   P∨(Q∧R) → (P∨Q)∧(P∨R)  :=
 begin
-  sorry,
+  intro pouqr,
+  cases pouqr with p qr,
+  split,
+  left,
+  exact p,
+  left, 
+  exact p,
+  cases qr with q r,
+  split,
+  right,
+  exact q,
+  right,
+  exact r,
 end
 
 theorem distr_disj_conj_converse :
   (P∨Q)∧(P∨R) → P∨(Q∧R)  :=
 begin
-  sorry,
+  intro pouqpour,
+  cases pouqpour with pouq pour,
+  cases pouq with p q,
+  left,
+  exact p,
+  cases pour with p r,
+  left, 
+  exact p,
+  right,
+  split,
+  exact q,
+  exact r,
 end
 
 
@@ -278,13 +356,24 @@ end
 theorem curry_prop :
   ((P∧Q)→R) → (P→(Q→R))  :=
 begin
-  sorry,
+  intro pqr,
+  intro p,
+  intro q,
+  apply pqr,
+  split,
+  exact p,
+  exact q,
 end
 
 theorem uncurry_prop :
   (P→(Q→R)) → ((P∧Q)→R)  :=
 begin
-  sorry,
+  intro pqr,
+  intro pq,
+  cases pq with p q,
+  have qr : Q→R := pqr p,
+  have r : R := qr q,
+  exact r, 
 end
 
 
@@ -295,7 +384,8 @@ end
 theorem impl_refl :
   P → P  :=
 begin
-  sorry,
+  intro p,
+  exact p,
 end
 
 ------------------------------------------------
@@ -305,37 +395,59 @@ end
 theorem weaken_disj_right :
   P → (P∨Q)  :=
 begin
-  sorry,
+  intro p,
+  left,
+  exact p,
 end
 
 theorem weaken_disj_left :
   Q → (P∨Q)  :=
 begin
-  sorry,
+  intro q,
+  right,
+  exact q,
 end
 
 theorem weaken_conj_right :
   (P∧Q) → P  :=
 begin
-  sorry,
+  intro pq,
+  cases pq with p q,
+  exact p,
 end
 
 theorem weaken_conj_left :
   (P∧Q) → Q  :=
 begin
-  sorry,
+  intro pq,
+  cases pq with p q,
+  exact q,
 end
 
 theorem conj_idempot :
   (P∧P) ↔ P :=
 begin
-  sorry,
+  split,
+  intro pp,
+  cases pp with p p,
+  exact p,
+  intro p,
+  split,
+  exact p,
+  exact p,
 end
 
 theorem disj_idempot :
   (P∨P) ↔ P  :=
 begin
-  sorry,
+  split,
+  intro poup,
+  cases poup with p p,
+  exact p,
+  exact p,
+  intro p,
+  right,
+  exact p,
 end
 
 end propositional
@@ -357,24 +469,42 @@ variables P Q : U -> Prop
 theorem demorgan_exists :
   ¬(∃x, P x) → (∀x, ¬P x)  :=
 begin
-  sorry,
+  intro a,
+  intro x,
+  intro px,
+  apply a,
+  existsi x,
+  exact px,
 end
 
 theorem demorgan_exists_converse :
   (∀x, ¬P x) → ¬(∃x, P x)  :=
 begin
-  sorry,
+  intro a,
+  intro b,
+  cases b with x px,
+  have npx : ¬P x := a x,
+  contradiction,
 end
 
 theorem demorgan_forall :
   ¬(∀x, P x) → (∃x, ¬P x)  :=
 begin
-  sorry,
+  intro n,
+  by_contra e,
+  apply n,
+  intro x,
+  by_contra npx,
+  apply e,
+  existsi x, 
+  exact npx,
 end
 
 theorem demorgan_forall_converse :
   (∃x, ¬P x) → ¬(∀x, P x)  :=
 begin
+  intro a,
+  intro b,
   sorry,
 end
 
