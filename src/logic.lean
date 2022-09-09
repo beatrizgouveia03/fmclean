@@ -30,12 +30,8 @@ theorem doubleneg_law :
   ¬¬P ↔ P  :=
 begin
   split,
-  intro np,
-  by_contra hboom,
-  contradiction,
-  intro p,
-  intro np,
-  contradiction,
+  exact doubleneg_elim P,
+  exact doubleneg_intro P,
 end
 
 ------------------------------------------------
@@ -119,34 +115,8 @@ theorem contrapositive_law :
   (P → Q) ↔ (¬Q → ¬P)  :=
 begin
   split,
-  intro pq,
-  intro nq,
-  intro p,
-  have q : Q := pq p,
-  contradiction,
-  intro nqnp,
-  intro p,
-  by_contra hboom,
-  apply nqnp,
-  exact hboom,
-  exact p,
-end
-
-
-------------------------------------------------
--- A irrefutabilidade do LEM:
-------------------------------------------------
-
-theorem lem_irrefutable :
-  ¬¬(P∨¬P)  :=
-begin
-  intro nP,
-  apply nP,
-  right,
-  intro P,
-  apply nP,
-  left,
-  exact P,
+  exact impl_as_contrapositive P Q,
+  exact impl_as_contrapositive_converse P Q,
 end
 
 
@@ -227,12 +197,10 @@ theorem demorgan_conj :
   ¬(P∧Q) → (¬Q ∨ ¬P)  :=
 begin
   intro npouq,
-  right,
-  intro p,
+  by_contra nqp,
   apply npouq,
-  split,
-  exact p,
-  sorry,
+  
+
 end
 
 theorem demorgan_conj_converse :
@@ -490,9 +458,9 @@ end
 theorem demorgan_forall :
   ¬(∀x, P x) → (∃x, ¬P x)  :=
 begin
-  intro n,
+  intro a,
   by_contra e,
-  apply n,
+  apply a,
   intro x,
   by_contra npx,
   apply e,
@@ -503,20 +471,41 @@ end
 theorem demorgan_forall_converse :
   (∃x, ¬P x) → ¬(∀x, P x)  :=
 begin
+  intro e,
   intro a,
-  intro b,
   sorry,
+
 end
 
 theorem demorgan_forall_law :
   ¬(∀x, P x) ↔ (∃x, ¬P x)  :=
 begin
+  split,
+  intro a,
+  by_contra e,
+  apply a,
+  intro x,
+  by_contra npx,
+  apply e,
+  existsi x,
+  exact npx,
+  intro e,
+  intro a,
   sorry,
 end
 
 theorem demorgan_exists_law :
   ¬(∃x, P x) ↔ (∀x, ¬P x)  :=
 begin
+  split,
+  intro ne,
+  intro x,
+  by_contra px,
+  apply ne,
+  existsi x,
+  exact px,
+  intro a,
+  by_contra ne,
   sorry,
 end
 
@@ -528,6 +517,8 @@ end
 theorem exists_as_neg_forall :
   (∃x, P x) → ¬(∀x, ¬P x)  :=
 begin
+  intro e,
+  intro a,
   sorry,
 end
 
