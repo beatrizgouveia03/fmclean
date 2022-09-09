@@ -199,7 +199,15 @@ begin
   intro npouq,
   by_contra nqp,
   apply npouq,
-  
+  split,
+  by_contra np,
+  apply nqp,
+  right,
+  exact np,
+  by_contra nq,
+  apply nqp,
+  left,
+  exact nq,
 
 end
 
@@ -218,8 +226,8 @@ theorem demorgan_conj_law :
   ¬(P∧Q) ↔ (¬Q ∨ ¬P)  :=
 begin
   split,
-  intro npq,
-  sorry,
+  exact demorgan_conj P Q,
+  exact demorgan_conj_converse P Q,
 end
 
 theorem demorgan_disj_law :
@@ -473,7 +481,9 @@ theorem demorgan_forall_converse :
 begin
   intro e,
   intro a,
-  sorry,
+  cases e with  x npx,
+  have px : P x := a x,
+  contradiction,
 
 end
 
@@ -481,32 +491,16 @@ theorem demorgan_forall_law :
   ¬(∀x, P x) ↔ (∃x, ¬P x)  :=
 begin
   split,
-  intro a,
-  by_contra e,
-  apply a,
-  intro x,
-  by_contra npx,
-  apply e,
-  existsi x,
-  exact npx,
-  intro e,
-  intro a,
-  sorry,
+  exact demorgan_forall U P,
+  exact demorgan_forall_converse U P,
 end
 
 theorem demorgan_exists_law :
   ¬(∃x, P x) ↔ (∀x, ¬P x)  :=
 begin
   split,
-  intro ne,
-  intro x,
-  by_contra px,
-  apply ne,
-  existsi x,
-  exact px,
-  intro a,
-  by_contra ne,
-  sorry,
+  exact demorgan_exists U P,
+  exact demorgan_exists_converse U P,
 end
 
 
@@ -519,37 +513,59 @@ theorem exists_as_neg_forall :
 begin
   intro e,
   intro a,
-  sorry,
+  cases e with x px,
+  have npx : ¬P x := a x,
+  contradiction,
 end
 
 theorem forall_as_neg_exists :
   (∀x, P x) → ¬(∃x, ¬P x)  :=
 begin
-  sorry,
+  intro a,
+  intro e,
+  cases e with x npx,
+  have px : P x := a x,
+  contradiction,
 end
 
 theorem forall_as_neg_exists_converse :
   ¬(∃x, ¬P x) → (∀x, P x)  :=
 begin
-  sorry,
+  intro ne,
+  intro x,
+  by_contra npx,
+  apply ne,
+  existsi x,
+  exact npx,
 end
 
 theorem exists_as_neg_forall_converse :
   ¬(∀x, ¬P x) → (∃x, P x)  :=
 begin
-  sorry,
+  intro na,
+  by_contra ne,
+  apply na,
+  intro x,
+  by_contra px,
+  apply ne,
+  existsi x,
+  exact px,
 end
 
 theorem forall_as_neg_exists_law :
   (∀x, P x) ↔ ¬(∃x, ¬P x)  :=
 begin
-  sorry,
+  split,
+  exact forall_as_neg_exists U P,
+  exact forall_as_neg_exists_converse U P,
 end
 
 theorem exists_as_neg_forall_law :
   (∃x, P x) ↔ ¬(∀x, ¬P x)  :=
 begin
-  sorry,
+  split,
+  exact exists_as_neg_forall U P,
+  exact exists_as_neg_forall_converse U P,
 end
 
 
